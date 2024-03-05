@@ -24,6 +24,7 @@ public class IbanValidatorTest {
     @Test 
     void testValidatePattern_Estonia(){
         assertTrue( IbanValidator.validatePattern("EE541010846630271646"));     // + valid
+        assertTrue( IbanValidator.validatePattern("ee541010846630271646"));     // + valid
         assertTrue(!IbanValidator.validatePattern("EE54101084663027164635"));   // - too long
         assertTrue(!IbanValidator.validatePattern("EE5410108466302716"));       // - too short
         assertTrue( IbanValidator.validatePattern("EE541010486632071646"));     // + iban is not valid, but fits the pattern
@@ -43,6 +44,8 @@ public class IbanValidatorTest {
     void testValidateCheckNumber_Estonia() {
         assertTrue( IbanValidator.validateCheckNumber("EE651015872655548611"));     // + valid
         assertTrue( IbanValidator.validateCheckNumber("EE541010846630271646"));     // + valid
+        assertTrue( IbanValidator.validateCheckNumber("ee651015872655548611"));     // + valid
+        assertTrue( IbanValidator.validateCheckNumber("ee541010846630271646"));     // + valid
         assertTrue(!IbanValidator.validateCheckNumber("EE881010846630271646"));     // - invalid check code
         assertTrue(!IbanValidator.validateCheckNumber("EE54101084663027164635"));   // - wrong pattern
         assertTrue(!IbanValidator.validateCheckNumber("EE5410108466302716"));       // - wrong pattern
@@ -62,6 +65,9 @@ public class IbanValidatorTest {
         assertTrue("SEB"==IbanValidator.extractBankCode("EE651015872655548611"));
         assertTrue("Swedbank"==IbanValidator.extractBankCode("EE652215872655548611"));
         assertTrue("LHV"==IbanValidator.extractBankCode("EE657715872655548611"));
+        assertTrue("SEB"==IbanValidator.extractBankCode("ee651015872655548611"));
+        assertTrue("Swedbank"==IbanValidator.extractBankCode("ee652215872655548611"));
+        assertTrue("LHV"==IbanValidator.extractBankCode("ee657715872655548611"));
         assertTrue(0==IbanValidator.extractBankCode("EE653315872655548611").length());  // 33 bank code does not exist at all
         assertTrue(0==IbanValidator.extractBankCode("EE654215872655548611").length());  // Coop existsbut does not supported in the solution yet
         assertTrue(0==IbanValidator.extractBankCode("EE653A315872655548611").length()); // letter A on place where digit should be
