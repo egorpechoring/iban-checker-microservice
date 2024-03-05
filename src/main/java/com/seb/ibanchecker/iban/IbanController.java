@@ -27,7 +27,7 @@ public class IbanController {
 
         try{
             ibans = service.processIbans(requestBody.getIbans());
-        } catch (IbanProcessingException e){
+        } catch (Exception e){
             ApplicationLogger.error("service internal error: ", e);
 
             return ResponseEntity.internalServerError().body(
@@ -50,7 +50,7 @@ public class IbanController {
 
         try{
             ibans = service.processIbans(requestBody.getIbans());
-        } catch (IbanProcessingException e){
+        } catch (Exception e){
             ApplicationLogger.error("service internal error: ", e);
 
             return ResponseEntity.internalServerError().body(
