@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seb.ibanchecker.iban.models.BaseDTO;
+import com.seb.ibanchecker.iban.models.IbanDTOFactory;
 import com.seb.ibanchecker.iban.models.IbanEntity;
+import com.seb.ibanchecker.iban.models.IbanProcessingException;
 import com.seb.ibanchecker.iban.models.IbanRequestBody;
 import com.seb.ibanchecker.iban.models.IbanResult;
 import com.seb.ibanchecker.iban.models.IbanResult.ResultBuilder;
@@ -18,27 +19,51 @@ import com.seb.ibanchecker.util.ApplicationLogger;
 @RestController
 @RequestMapping("/api/secure/iban")
 public class IbanController {
-    // place for service connection
     private IbanService service = new IbanService();
 
     @PostMapping(value = "/validate", consumes = "application/json")
     public ResponseEntity<IbanResult> validate(@RequestBody IbanRequestBody requestBody){
-        ApplicationLogger.info("requestBody received");
+        List<IbanEntity> ibans;
 
-        // TODO: try catch
-        List<IbanEntity> ibans = service.processIbans(requestBody.getIbans());
-        ApplicationLogger.info("ibans processed");
+        try{
+            ibans = service.processIbans(requestBody.getIbans());
+        } catch (IbanProcessingException e){
+            ApplicationLogger.error("service internal error: ", e);
 
-        return ResponseEntity.internalServerError().body(
+            return ResponseEntity.internalServerError().body(
+                new ResultBuilder()
+                    .msg(e.getMessage())
+                    .build()
+            );
+        }
+
+        return ResponseEntity.ok().body(
             new ResultBuilder()
-                .msg("test")
-                .ibanValidations(BaseDTO.createValidationDTOs(ibans))
+                .ibanValidations(IbanDTOFactory.createValidationDTOs(ibans))
                 .build()
         );
     }
 
     @PostMapping(value = "/recognize", consumes = "application/json")
     public ResponseEntity<IbanResult> recognize(@RequestBody IbanRequestBody requestBody){
-        return ResponseEntity.internalServerError().body( new ResultBuilder().msg("test").build());
+        List<IbanEntity> ibans;
+
+        try{
+            ibans = service.processIbans(requestBody.getIbans());
+        } catch (IbanProcessingException e){
+            ApplicationLogger.error("service internal error: ", e);
+
+            return ResponseEntity.internalServerError().body(
+                new ResultBuilder()
+                    .msg(e.getMessage())
+                    .build()
+            );
+        }
+
+        return ResponseEntity.ok().body(
+            new ResultBuilder()
+                .ibanDetails(IbanDTOFactory.createDetailsDTOs(ibans))
+                .build()
+        );
     }
 }
