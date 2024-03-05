@@ -54,23 +54,23 @@ public class IbanValidatorTest {
 
     @Test
     void testExtractBankCode(){
-        assertTrue(0==IbanValidator.extractBankCode(null).length());    // - 
-        assertTrue(0==IbanValidator.extractBankCode("").length());      // - 
-        assertTrue(0==IbanValidator.extractBankCode(" ").length());     // - 
-        assertTrue(0==IbanValidator.extractBankCode("&%^").length());   // - 
+        assertTrue(null==IbanValidator.extractBankCode(null));    // - 
+        assertTrue(null==IbanValidator.extractBankCode(""));      // - 
+        assertTrue(null==IbanValidator.extractBankCode(" "));     // - 
+        assertTrue(null==IbanValidator.extractBankCode("&%^"));   // - 
     }
 
     @Test
     void testExtractBankCode_Estonia(){
-        assertTrue("SEB"==IbanValidator.extractBankCode("EE651015872655548611"));
-        assertTrue("Swedbank"==IbanValidator.extractBankCode("EE652215872655548611"));
-        assertTrue("LHV"==IbanValidator.extractBankCode("EE657715872655548611"));
-        assertTrue("SEB"==IbanValidator.extractBankCode("ee651015872655548611"));
-        assertTrue("Swedbank"==IbanValidator.extractBankCode("ee652215872655548611"));
-        assertTrue("LHV"==IbanValidator.extractBankCode("ee657715872655548611"));
-        assertTrue(0==IbanValidator.extractBankCode("EE653315872655548611").length());  // 33 bank code does not exist at all
-        assertTrue(0==IbanValidator.extractBankCode("EE654215872655548611").length());  // Coop existsbut does not supported in the solution yet
-        assertTrue(0==IbanValidator.extractBankCode("EE653A315872655548611").length()); // letter A on place where digit should be
-        assertTrue("SEB"==IbanValidator.extractBankCode("EE0010158726555486AA"));       // wrong iban, but valid SEB code
+        assertTrue(("10").equals(IbanValidator.extractBankCode("EE651015872655548611")));
+        assertTrue(("22").equals(IbanValidator.extractBankCode("EE652215872655548611")));
+        assertTrue(("77").equals(IbanValidator.extractBankCode("EE657715872655548611")));
+        assertTrue(("10").equals(IbanValidator.extractBankCode("ee651015872655548611")));
+        assertTrue(("22").equals(IbanValidator.extractBankCode("ee652215872655548611")));
+        assertTrue(("77").equals(IbanValidator.extractBankCode("ee657715872655548611")));
+        assertTrue(("33").equals(IbanValidator.extractBankCode("EE653315872655548611")));  // 33 bank code does not exist at all, but validator dont know it
+        assertTrue(("42").equals(IbanValidator.extractBankCode("EE654215872655548611")));  // Coop existsbut does not supported in the solution yet, but validator dont know it
+        assertTrue(null==IbanValidator.extractBankCode("EE653A315872655548611")); // letter A on place where digit should be
+        assertTrue(("10").equals(IbanValidator.extractBankCode("EE0010158726555486AA")));  // wrong iban, but valid SEB code
     }
 }
