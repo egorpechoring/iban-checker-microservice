@@ -40,7 +40,7 @@ public class RecognizeEndpointTest {
         
         when(ibanService.processIbans(anyList())).thenReturn(mockIbanEntities);
 
-        ResponseEntity<IbanResult> response = ibanController.validate(requestBody);
+        ResponseEntity<IbanResult> response = ibanController.recognize(requestBody);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getMsg().length());
