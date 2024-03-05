@@ -1,4 +1,4 @@
-package com.seb.ibanchecker.iban.models;
+package com.seb.ibanchecker.iban.entities;
 
 public class IbanValidationDTO {
     private final String test;

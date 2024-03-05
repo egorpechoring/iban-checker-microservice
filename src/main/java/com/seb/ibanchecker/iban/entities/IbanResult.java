@@ -1,4 +1,4 @@
-package com.seb.ibanchecker.iban.models;
+package com.seb.ibanchecker.iban.entities;
 
 import java.util.ArrayList;
 import java.util.List;

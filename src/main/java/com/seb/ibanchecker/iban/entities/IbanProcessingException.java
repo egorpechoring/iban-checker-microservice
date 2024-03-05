@@ -1,4 +1,4 @@
-package com.seb.ibanchecker.iban.models;
+package com.seb.ibanchecker.iban.entities;
 
 public class IbanProcessingException extends RuntimeException {
     public IbanProcessingException(String message) {

@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seb.ibanchecker.iban.models.IbanDTOFactory;
-import com.seb.ibanchecker.iban.models.IbanEntity;
-import com.seb.ibanchecker.iban.models.IbanProcessingException;
-import com.seb.ibanchecker.iban.models.IbanRequestBody;
-import com.seb.ibanchecker.iban.models.IbanResult;
-import com.seb.ibanchecker.iban.models.IbanResult.ResultBuilder;
+import com.seb.ibanchecker.iban.entities.IbanDTOFactory;
+import com.seb.ibanchecker.iban.entities.IbanEntity;
+import com.seb.ibanchecker.iban.entities.IbanProcessingException;
+import com.seb.ibanchecker.iban.entities.IbanRequestBody;
+import com.seb.ibanchecker.iban.entities.IbanResult;
+import com.seb.ibanchecker.iban.entities.IbanResult.ResultBuilder;
 import com.seb.ibanchecker.util.ApplicationLogger;
 
 @RestController
