@@ -30,23 +30,29 @@ Key Functionality:
 1. IBAN Validation endpoint & description
 <br/>
 Example output:
+
 ```
+
 AA051245445454552117989     Invalid
 LT647044001231465456        Valid
 LT517044077788877777        Valid
 LT227044077788877777        Invalid
 CC051245445454552117989     Invalid
+
 ```
 
 2. Bank Recognition endpoint & description
 <br/>
 Example output:
+
 ```
+
 AA051245445454552117989     -
 LT647044001231465456        Bank1
 LT517180077788877777        Bank2
 LT227044077788877777        SEB
 CC051245445454552117989     -
+
 ```
 
 ## License

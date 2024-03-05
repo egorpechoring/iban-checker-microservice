@@ -1,7 +1,5 @@
 package com.seb.ibanchecker.iban;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,14 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.seb.ibanchecker.iban.models.IbanEntity;
+import com.seb.ibanchecker.iban.models.IbanProcessingException;
 import com.seb.ibanchecker.iban.models.IbanRequestBody;
 import com.seb.ibanchecker.iban.models.IbanResult;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidateTest {
+public class ValidateEndpointTest {
     @InjectMocks
     private IbanController ibanController;
 
@@ -29,9 +29,9 @@ public class ValidateTest {
     private IbanService ibanService;
 
     @Test
-    public void testValidateTEST() {
+    public void testSuccess() {
         IbanRequestBody requestBody = new IbanRequestBody();
-        requestBody.set(Arrays.asList("iban1", "iban2"));
+        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
 
         List<IbanEntity> mockIbanEntities = Arrays.asList(
                 new IbanEntity(),
@@ -42,32 +42,25 @@ public class ValidateTest {
 
         ResponseEntity<IbanResult> response = ibanController.validate(requestBody);
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("test", response.getBody().getMsg());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(0, response.getBody().getMsg().length());
         assertEquals(2, response.getBody().getIbansValidation().size());
+        assertEquals(0, response.getBody().getIbansDetails().size());
+    }
+
+    @Test
+    public void testProcessingException() {
+        IbanRequestBody requestBody = new IbanRequestBody();
+        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
+        
+        String msg = "processing internal error";
+        when(ibanService.processIbans(anyList())).thenThrow(new IbanProcessingException(msg));
+
+        ResponseEntity<IbanResult> response = ibanController.validate(requestBody);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(msg, response.getBody().getMsg());
+        assertEquals(0, response.getBody().getIbansValidation().size());
+        assertEquals(0, response.getBody().getIbansDetails().size());
     }
 }
-
-
-
-// @ExtendWith(MockitoExtension.class)
-// public class ValidateTest {
-//     // @Mock
-//     // private IbanService ibanService;
-
-//     @InjectMocks
-//     private IbanController ibanController;
-
-//     @Test
-//     public void testValidateTEST() {
-//         // when(ibanService.method(par)).thenReturn(new Result(...));
-
-//         IbanRequestBody requestBody = new IbanRequestBody();
-//         requestBody.set(Arrays.asList("iban1", "iban2"));
-
-//         ResponseEntity<IbanResult> response = ibanController.recognize(requestBody);
-
-//         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-//         assertEquals("test", response.getBody().getMsg());
-//     }
-// }

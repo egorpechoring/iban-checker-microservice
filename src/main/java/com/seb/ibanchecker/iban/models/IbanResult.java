@@ -24,7 +24,10 @@ public class IbanResult {
         return this.ibansValidation;
     }
 
-    // getter for iban details list
+    //TODO: complete getIbansDetails & in builder
+    public List<IbanValidationDTO> getIbansDetails(){
+        return this.ibansValidation;
+    }
 
     public static class ResultBuilder {
         private String msg;
