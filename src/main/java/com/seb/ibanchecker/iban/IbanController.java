@@ -1,6 +1,7 @@
 package com.seb.ibanchecker.iban;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.seb.ibanchecker.iban.entities.IbanBaseDTO;
 import com.seb.ibanchecker.iban.entities.IbanDTOFactory;
 import com.seb.ibanchecker.iban.entities.IbanEntity;
 import com.seb.ibanchecker.iban.entities.IbanRequestBody;
@@ -25,36 +27,22 @@ public class IbanController {
         this.service = service;
     }
 
-    // TODO: REFACTOR ENDPOINTS
     @PostMapping(value = "/validate", consumes = "application/json")
-    public ResponseEntity<IbanResult> validate(@RequestBody IbanRequestBody requestBody){
-        List<IbanEntity> ibans;
-        try{
-            ibans = service.processIbans(requestBody.getData());
-        } catch (Exception e){
-            ApplicationLogger.error("service internal error: ", e);
-
-            return ResponseEntity.internalServerError().body(
-                new ResultBuilder()
-                    .msg(e.getMessage())
-                    .build()
-            );
-        }
-
-        return ResponseEntity.ok().body(
-            new ResultBuilder()
-                .ibanData(IbanDTOFactory.createValidationDTOs(ibans))
-                .build()
-        );
+    public ResponseEntity<IbanResult> validate(@RequestBody IbanRequestBody requestBody) {
+        return processIbans(requestBody, IbanDTOFactory::createValidationDTOs);
     }
 
     @PostMapping(value = "/recognize", consumes = "application/json")
-    public ResponseEntity<IbanResult> recognize(@RequestBody IbanRequestBody requestBody){
+    public ResponseEntity<IbanResult> recognize(@RequestBody IbanRequestBody requestBody) {
+        return processIbans(requestBody, IbanDTOFactory::createDetailsDTOs);
+    }
+
+    private ResponseEntity<IbanResult> processIbans(IbanRequestBody requestBody, Function<List<IbanEntity>, List<IbanBaseDTO>> dtoCreator) {
         List<IbanEntity> ibans;
 
-        try{
+        try {
             ibans = service.processIbans(requestBody.getData());
-        } catch (Exception e){
+        } catch (Exception e) {
             ApplicationLogger.error("service internal error: ", e);
 
             return ResponseEntity.internalServerError().body(
@@ -66,8 +54,9 @@ public class IbanController {
 
         return ResponseEntity.ok().body(
             new ResultBuilder()
-                .ibanData(IbanDTOFactory.createDetailsDTOs(ibans))
+                .ibanData(dtoCreator.apply(ibans))
                 .build()
         );
     }
+
 }

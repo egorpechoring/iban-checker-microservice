@@ -22,7 +22,6 @@ public class IbanService {
     }
 
     public List<IbanEntity> processIbans(List<String> strIbansList){
-        // TODO: wrap in try catch
         List<IbanEntity> ibans = new ArrayList<>();
         if (strIbansList.size() == 0) {
             return ibans;
@@ -38,7 +37,6 @@ public class IbanService {
 
             String bank = repository.getBankByCode(IbanValidator.extractCountryCode(iban), IbanValidator.extractBankCode(iban));
 
-            // TODO: create enum with messages?
             ibans.add(new IbanEntity(iban, isValid, bank != null ? bank : "-"));
         }
         

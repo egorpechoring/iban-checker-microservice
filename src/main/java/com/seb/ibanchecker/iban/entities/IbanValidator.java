@@ -18,8 +18,6 @@ public class IbanValidator {
         // TODO: add others (in future)
     }};
 
-    // TODO: find a way to refactor extractBankCode & validatePattern
-
     public static String extractBankCode(String iban){
         iban = normalize(iban);
         if (iban == null || iban.length() == 0) {
