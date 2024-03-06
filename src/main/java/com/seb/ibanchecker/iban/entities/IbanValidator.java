@@ -68,6 +68,14 @@ public class IbanValidator {
         return remainder.intValue() == 1;
     }
 
+    public static String normalize(String iban) {
+        return (iban != null && !iban.isEmpty() && iban.length() >= 2) ? iban.replaceAll("\\s", "").toUpperCase() : null;
+    }
+
+    public static String substringCountryCode(String iban) {
+        return (iban != null && !iban.isEmpty() && iban.length() >= 2) ? iban.substring(0, 2) : "";
+    }
+
     private static int modifyIbanDigitBuffer(final CharSequence ibanStr, final int readFromIndex,
                                     final int readToIndex, final char[] place, int putToIndex) {
         for (int i = readFromIndex; i < readToIndex; i++) {
@@ -98,13 +106,5 @@ public class IbanValidator {
         }
     
         return rules;
-    }
-
-    private static String normalize(String iban) {
-        return (iban != null && !iban.isEmpty() && iban.length() >= 2) ? iban.replaceAll("\\s", "").toUpperCase() : null;
-    }
-    
-    private static String substringCountryCode(String iban) {
-        return iban.substring(0, 2);
     }
 }

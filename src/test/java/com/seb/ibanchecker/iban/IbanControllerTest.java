@@ -31,11 +31,11 @@ public class IbanControllerTest {
     @Test
     public void testRecognizeSuccess() {
         IbanRequestBody requestBody = new IbanRequestBody();
-        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
+        requestBody.setData(Arrays.asList("ibanStr1", "ibanStr2"));
 
         List<IbanEntity> mockIbanEntities = Arrays.asList(
-                new IbanEntity(),
-                new IbanEntity()
+                new IbanEntity("", false, ""),
+                new IbanEntity("", false, "")
         );
         
         when(ibanService.processIbans(anyList())).thenReturn(mockIbanEntities);
@@ -50,7 +50,7 @@ public class IbanControllerTest {
     @Test
     public void testRecognizeProcessingException() {
         IbanRequestBody requestBody = new IbanRequestBody();
-        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
+        requestBody.setData(Arrays.asList("ibanStr1", "ibanStr2"));
         
         String msg = "processing internal error";
         when(ibanService.processIbans(anyList())).thenThrow(new IbanProcessingException(msg));
@@ -65,11 +65,11 @@ public class IbanControllerTest {
     @Test
     public void testValidateSuccess() {
         IbanRequestBody requestBody = new IbanRequestBody();
-        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
+        requestBody.setData(Arrays.asList("ibanStr1", "ibanStr2"));
 
         List<IbanEntity> mockIbanEntities = Arrays.asList(
-                new IbanEntity(),
-                new IbanEntity()
+            new IbanEntity("", false, ""),
+            new IbanEntity("", false, "")
         );
         
         when(ibanService.processIbans(anyList())).thenReturn(mockIbanEntities);
@@ -85,7 +85,7 @@ public class IbanControllerTest {
     @Test
     public void testValidateProcessingException() {
         IbanRequestBody requestBody = new IbanRequestBody();
-        requestBody.set(Arrays.asList("ibanStr1", "ibanStr2"));
+        requestBody.setData(Arrays.asList("ibanStr1", "ibanStr2"));
         
         String msg = "processing internal error";
         when(ibanService.processIbans(anyList())).thenThrow(new IbanProcessingException(msg));

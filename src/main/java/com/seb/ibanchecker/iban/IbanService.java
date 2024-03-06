@@ -1,5 +1,6 @@
 package com.seb.ibanchecker.iban;
 
+import java.util.ArrayList;
 // import java.util.Collections;
 import java.util.List;
 
@@ -15,12 +16,31 @@ public class IbanService {
     @Autowired
     private IbanRepository repository;
 
-    IbanService(){}
+    @Autowired
+    public IbanService(IbanRepository repository) {
+        this.repository = repository;
+    }
 
-    public List<IbanEntity> processIbans(List<String> ibansList){
-        //return Collections.emptyList();
-        // foreach string build iban using validator
-        // call repo to get bank
-        throw new IbanProcessingException("test"); 
+    public List<IbanEntity> processIbans(List<String> strIbansList){
+        // TODO: wrap in try catch
+        List<IbanEntity> ibans = new ArrayList<>();
+        if (strIbansList.size() == 0) {
+            return ibans;
+        }
+
+        for(int i = 0; i < strIbansList.size(); i++){
+            String iban = IbanValidator.normalize(strIbansList.get(i));
+
+            Boolean isValid = IbanValidator.validatePattern(iban);
+            if (isValid){
+                isValid = IbanValidator.validateCheckNumber(iban);
+            }
+
+            String bank = repository.getBankByCode(iban, IbanValidator.substringCountryCode(iban));
+
+            ibans.add(new IbanEntity(iban, isValid, bank != null ? bank : ""));
+        }
+        
+        return ibans;
     }
 }

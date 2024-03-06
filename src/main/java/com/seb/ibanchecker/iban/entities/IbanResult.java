@@ -1,12 +1,12 @@
 package com.seb.ibanchecker.iban.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+// @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class IbanResult {
     private final String msg;
     private final List<IbanValidationDTO> ibansValidation;
@@ -14,8 +14,8 @@ public class IbanResult {
 
     IbanResult(String msg, List<IbanValidationDTO> ibansValidation, List<IbanDetailsDTO> ibansDetails){
         this.msg = msg;
-        this.ibansValidation = (ibansValidation != null) ? ibansValidation : new ArrayList<>();
-        this.ibansDetails = (ibansDetails != null) ? ibansDetails : new ArrayList<>();
+        this.ibansValidation = (ibansValidation != null) ? ibansValidation : null;
+        this.ibansDetails = (ibansDetails != null) ? ibansDetails : null;
     }
 
     public String getMsg() {

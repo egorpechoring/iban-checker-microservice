@@ -2,6 +2,7 @@ package com.seb.ibanchecker.iban;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +19,18 @@ import com.seb.ibanchecker.util.ApplicationLogger;
 @RestController
 @RequestMapping("/api/secure/iban")
 public class IbanController {
-    private IbanService service = new IbanService();
+    private IbanService service;
+    @Autowired
+    public IbanController(IbanService service) {
+        this.service = service;
+    }
 
+    // TODO: REFACTOR ENDPOINTS
     @PostMapping(value = "/validate", consumes = "application/json")
     public ResponseEntity<IbanResult> validate(@RequestBody IbanRequestBody requestBody){
         List<IbanEntity> ibans;
-
         try{
-            ibans = service.processIbans(requestBody.getIbans());
+            ibans = service.processIbans(requestBody.getData());
         } catch (Exception e){
             ApplicationLogger.error("service internal error: ", e);
 
@@ -48,7 +53,7 @@ public class IbanController {
         List<IbanEntity> ibans;
 
         try{
-            ibans = service.processIbans(requestBody.getIbans());
+            ibans = service.processIbans(requestBody.getData());
         } catch (Exception e){
             ApplicationLogger.error("service internal error: ", e);
 

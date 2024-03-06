@@ -5,11 +5,13 @@ import java.util.List;
 public class IbanRequestBody {
     private List<String> data;
 
-    public void set(List<String> data){
+    public IbanRequestBody(){}
+
+    public void setData(List<String> data){
         this.data = data;
     }
 
-    public List<String> getIbans(){
+    public List<String> getData(){
         return this.data;
     }
 }
