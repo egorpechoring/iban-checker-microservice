@@ -101,10 +101,10 @@ public class IbanValidator {
     }
 
     private static String normalize(String iban) {
-        return (iban != null && !iban.isEmpty()) ? iban.replaceAll("\\s", "").toUpperCase() : null;
+        return (iban != null && !iban.isEmpty() && iban.length() >= 2) ? iban.replaceAll("\\s", "").toUpperCase() : null;
     }
     
     private static String substringCountryCode(String iban) {
-        return (iban != null && iban.length() >= 2) ? iban.substring(0, 2) : null;
+        return iban.substring(0, 2);
     }
 }

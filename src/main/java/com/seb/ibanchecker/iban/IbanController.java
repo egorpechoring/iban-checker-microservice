@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seb.ibanchecker.iban.entities.IbanDTOFactory;
 import com.seb.ibanchecker.iban.entities.IbanEntity;
-import com.seb.ibanchecker.iban.entities.IbanProcessingException;
 import com.seb.ibanchecker.iban.entities.IbanRequestBody;
 import com.seb.ibanchecker.iban.entities.IbanResult;
 import com.seb.ibanchecker.iban.entities.IbanResult.ResultBuilder;
