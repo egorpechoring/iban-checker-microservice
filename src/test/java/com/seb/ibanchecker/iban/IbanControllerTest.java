@@ -44,8 +44,7 @@ public class IbanControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getMsg().length());
-        assertEquals(0, response.getBody().getIbansValidation().size());
-        assertEquals(2, response.getBody().getIbansDetails().size());
+        assertEquals(mockIbanEntities.size(), response.getBody().getIbansData().size());
     }
     @Test
     public void testRecognizeProcessingException() {
@@ -59,8 +58,7 @@ public class IbanControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals(msg, response.getBody().getMsg());
-        assertEquals(0, response.getBody().getIbansValidation().size());
-        assertEquals(0, response.getBody().getIbansDetails().size());
+        assertEquals(null, response.getBody().getIbansData());
     }
     @Test
     public void testValidateSuccess() {
@@ -78,8 +76,7 @@ public class IbanControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getMsg().length());
-        assertEquals(2, response.getBody().getIbansValidation().size());
-        assertEquals(0, response.getBody().getIbansDetails().size());
+        assertEquals(mockIbanEntities.size(), response.getBody().getIbansData().size());
     }
 
     @Test
@@ -94,7 +91,7 @@ public class IbanControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals(msg, response.getBody().getMsg());
-        assertEquals(0, response.getBody().getIbansValidation().size());
-        assertEquals(0, response.getBody().getIbansDetails().size());
+        assertEquals(0, response.getBody().getIbansData().size());
+        assertEquals(null, response.getBody().getIbansData());
     }
 }

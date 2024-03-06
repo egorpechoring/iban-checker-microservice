@@ -23,6 +23,10 @@ public class IbanResult {
         return Objects.toString(this.msg, "");
     }
 
+    public List<IbanValidationDTO> getIbansData(){
+        return this.ibansValidation;
+    }
+
     public List<IbanValidationDTO> getIbansValidation(){
         return this.ibansValidation;
     }
