@@ -1,5 +1,6 @@
 package com.seb.ibanchecker.iban.entities;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -9,6 +10,8 @@ import java.util.regex.PatternSyntaxException;
 import com.seb.ibanchecker.util.ApplicationLogger;
 
 public class IbanValidator {
+    private static final BigInteger NINETY_SEVEN = new BigInteger("97");
+
     private static Map<String, IbanRule> countryRules = new HashMap<String, IbanRule>() {{
         put("EE", new IbanRule(20, "EE\\d{18}", 4, 6));
         put("LT", new IbanRule(20, "LT\\d{18}", 4, 9));
@@ -48,8 +51,37 @@ public class IbanValidator {
         return false;
     }
 
-    public static Boolean validateCheckNumber(String iban){
-        throw new IbanProcessingException("public static Boolean validateCheckNumber(String iban){ not implemented yet");
+    public static Boolean validateCheckNumber(String iban) {
+        iban = normalize(iban);
+        if (iban == null || iban.length() < 4) {
+            return false;
+        }
+
+        final char[] buffer = new char[iban.length() * 2];
+
+        int offset = modifyIbanDigitBuffer(iban, 4, iban.length(), buffer, 0);
+        offset = modifyIbanDigitBuffer(iban, 0, 4, buffer, offset);
+
+        final BigInteger sum = new BigInteger(new String(buffer, 0, offset));
+        final BigInteger remainder = sum.remainder(NINETY_SEVEN);
+
+        return remainder.intValue() == 1;
+        // return calculatedCheckNumber.equals(new BigInteger(checkStr));
+    }
+
+    private static int modifyIbanDigitBuffer(final CharSequence ibanStr, final int readFromIndex,
+                                    final int readToIndex, final char[] place, int putToIndex) {
+        for (int i = readFromIndex; i < readToIndex; i++) {
+            char c = ibanStr.charAt(i);
+            if (c >= '0' && c <= '9') {
+                place[putToIndex++] = c;
+            } else if (c >= 'A' && c <= 'Z') {
+                int tmp = 10 + (c - 'A');
+                place[putToIndex++] = (char)('0' + tmp / 10);
+                place[putToIndex++] = (char)('0' + tmp % 10);
+            } 
+        }
+        return putToIndex;
     }
 
     private static IbanRule getRule(String iban) {
@@ -76,5 +108,4 @@ public class IbanValidator {
     private static String substringCountryCode(String iban) {
         return (iban != null && iban.length() >= 2) ? iban.substring(0, 2) : null;
     }
-
 }
