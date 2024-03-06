@@ -1,19 +1,14 @@
 package com.seb.ibanchecker.iban.entities;
 
-public class IbanDetailsDTO {
-    private final String iban;
+public class IbanDetailsDTO extends IbanBaseDTO {
     private final String bank;
 
     IbanDetailsDTO(String iban, String bank){
-        this.iban = iban;
+        super(iban);
         this.bank = bank;
     }
-
-    public String getIban(){
-        return this.iban;
-    }
-
-    public String getStatus(){
+    
+    public String getBank(){
         return this.bank;
     }
 }

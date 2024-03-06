@@ -1,18 +1,13 @@
 package com.seb.ibanchecker.iban.entities;
 
-public class IbanValidationDTO {
-    private final String iban;
+public class IbanValidationDTO extends IbanBaseDTO {
     private final Boolean status;
 
     IbanValidationDTO(String iban, Boolean status){
-        this.iban = iban;
+        super(iban);
         this.status = status;
     }
-
-    public String getIban(){
-        return this.iban;
-    }
-
+    
     public Boolean getStatus(){
         return this.status;
     }

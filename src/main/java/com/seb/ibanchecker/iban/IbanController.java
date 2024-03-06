@@ -43,7 +43,7 @@ public class IbanController {
 
         return ResponseEntity.ok().body(
             new ResultBuilder()
-                .ibanValidations(IbanDTOFactory.createValidationDTOs(ibans))
+                .ibanData(IbanDTOFactory.createValidationDTOs(ibans))
                 .build()
         );
     }
@@ -66,7 +66,7 @@ public class IbanController {
 
         return ResponseEntity.ok().body(
             new ResultBuilder()
-                .ibanDetails(IbanDTOFactory.createDetailsDTOs(ibans))
+                .ibanData(IbanDTOFactory.createDetailsDTOs(ibans))
                 .build()
         );
     }
