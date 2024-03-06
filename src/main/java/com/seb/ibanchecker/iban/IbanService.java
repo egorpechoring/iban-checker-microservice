@@ -36,9 +36,10 @@ public class IbanService {
                 isValid = IbanValidator.validateCheckNumber(iban);
             }
 
-            String bank = repository.getBankByCode(iban, IbanValidator.substringCountryCode(iban));
+            String bank = repository.getBankByCode(IbanValidator.extractCountryCode(iban), IbanValidator.extractBankCode(iban));
 
-            ibans.add(new IbanEntity(iban, isValid, bank != null ? bank : ""));
+            // TODO: create enum with messages?
+            ibans.add(new IbanEntity(iban, isValid, bank != null ? bank : "-"));
         }
         
         return ibans;

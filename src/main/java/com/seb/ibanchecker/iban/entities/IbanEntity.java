@@ -11,7 +11,7 @@ public class IbanEntity {
         this.bank = bank;
     }
 
-    public String getString(){
+    public String getIbanString(){
         return this.str;
     }
 
