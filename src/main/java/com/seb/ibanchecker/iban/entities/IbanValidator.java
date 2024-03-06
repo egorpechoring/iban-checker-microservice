@@ -66,7 +66,6 @@ public class IbanValidator {
         final BigInteger remainder = sum.remainder(NINETY_SEVEN);
 
         return remainder.intValue() == 1;
-        // return calculatedCheckNumber.equals(new BigInteger(checkStr));
     }
 
     private static int modifyIbanDigitBuffer(final CharSequence ibanStr, final int readFromIndex,
