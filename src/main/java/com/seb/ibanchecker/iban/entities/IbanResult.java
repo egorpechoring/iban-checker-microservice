@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class IbanResult {
     private final String msg;
+    // TODO: make one list for both options
     private final List<IbanValidationDTO> ibansValidation;
     private final List<IbanDetailsDTO> ibansDetails;
 
