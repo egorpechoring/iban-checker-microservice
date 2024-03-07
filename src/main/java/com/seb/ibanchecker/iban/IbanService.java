@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.seb.ibanchecker.iban.entities.IbanEntity;
-import com.seb.ibanchecker.iban.entities.IbanProcessingException;
 import com.seb.ibanchecker.iban.entities.IbanValidator;
 
 @Service
