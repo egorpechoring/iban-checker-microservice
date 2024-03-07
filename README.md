@@ -19,45 +19,113 @@ Key Functionality:
 
 ## Getting Started
 
-1. Make sure Java JDK, Maven and other installed. 
-2. Run command from root directory (were pom.xml and mvnw. files located)
+1. Make sure Java JDK, Maven and Spring Boot installed and you have IDE.
+2. Clon this repository.
+3. Run command from root directory (were pom.xml and mvnw. files located)
 ```
 ./mvnw spring-boot:run
 ```
 
+Or run via Docker, instructions from [Build and Deployment](#build-and-deployment) section.
+
 ## Usage
+### IBAN Validation 
+* Method `POST`
 
-1. IBAN Validation endpoint & description
-<br/>
-Example output:
+* Endpoint url `http://localhost:8080/api/secure/iban/validate`
+
+* Example json body:
+```
+
+{
+    "data": [
+        "AA051245445454552117989",
+        "LT647044001231465456",
+        "LT517044077788877777",
+        "LT227044077788877777",
+        "CC051245445454552117989"
+    ]
+}
+
+```
+* Example output:
+```
+
+{
+    "data": [
+        {
+            "iban": "AA051245445454552117989",
+            "status": false
+        },
+        {
+            "iban": "LT647044001231465456",
+            "status": true
+        },
+        {
+            "iban": "LT517044077788877777",
+            "status": true
+        },
+        {
+            "iban": "LT227044077788877777",
+            "status": false
+        },
+        {
+            "iban": "CC051245445454552117989",
+            "status": false
+        }
+    ]
+}
 
 ```
 
-AA051245445454552117989     Invalid
-LT647044001231465456        Valid
-LT517044077788877777        Valid
-LT227044077788877777        Invalid
-CC051245445454552117989     Invalid
+### Bank Recognition
+* Method `POST`
 
+* Endpoint url `http://localhost:8080/api/secure/iban/recognize`
+
+* Example json body:
 ```
 
-2. Bank Recognition endpoint & description
-<br/>
-Example output:
-
+{
+    "data" : [
+        "AA051245445454552117989",
+        "LT647044001231465456",
+        "LT517180077788877777", 
+        "LT227044077788877777",
+        "CC051245445454552117989"
+    ]
+}
 ```
 
-AA051245445454552117989     -
-LT647044001231465456        Bank1
-LT517180077788877777        Bank2
-LT227044077788877777        SEB
-CC051245445454552117989     -
-
+* Example output:
 ```
 
-## License
+{
+    "data": [
+        {
+            "iban": "AA051245445454552117989",
+            "bank": "-"
+        },
+        {
+            "iban": "LT647044001231465456",
+            "bank": "SEB"
+        },
+        {
+            "iban": "LT517180077788877777",
+            "bank": "Siauliu"
+        },
+        {
+            "iban": "LT227044077788877777",
+            "bank": "SEB"
+        },
+        {
+            "iban": "CC051245445454552117989",
+            "bank": "-"
+        }
+    ]
+}
 
-[LICENSE](LICENSE) will be added later.
+```
 
 ## Documentation
 
@@ -65,11 +133,22 @@ Additional documentation will be available [here](link) in future.
 
 ## Build and Deployment
 
-Docker instructions will be described in the future.
+1. Build an Docker image 
+```
+docker build -t iban-app .  
+```
+2. Run a Docker container
+```
+docker run -p 8080:8080 iban-app
+```
 
 ## Testing
 
-Testing instructions will be described in the future.
+- Run tests manually from 'Testing' tab
+- Or run tests from terminal:
+```
+mvn test
+```
 
 ## Contact
 
